@@ -8,8 +8,12 @@ export interface ServiceItem {
 export interface Review {
   id: number;
   author: string;
+  role?: string;
+  avatar?: string;
   rating: number;
   text: string;
+  source?: 'google' | 'treatwell';
+  date?: string;
 }
 
 export interface SliderItem {

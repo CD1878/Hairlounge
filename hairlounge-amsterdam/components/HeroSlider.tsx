@@ -1,47 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { HERO_SLIDES } from '../constants';
 
 const HeroSlider: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-brand-black">
-      {HERO_SLIDES.map((slide, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${
-            index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          {/* Image */}
-          <img
-            src={slide.image}
-            alt={slide.alt}
-            className="h-full w-full object-cover opacity-80"
-          />
-          {/* Subtle Overlay to ensure text readability if we add any, or just to mute the image slightly */}
-          <div className="absolute inset-0 bg-black/10" />
-        </div>
-      ))}
-
-      {/* Visual Navigation Dots */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-10">
-        {HERO_SLIDES.map((_, index) => (
-          <button
+    <section className="relative pt-28 h-screen md:h-[90vh] bg-brand-white overflow-hidden">
+      {/* 
+        Gallery Sample Picks (Hero)
+        Desktop: 4-Column Grid
+        Mobile: Horizontal Scroll Snap
+      */}
+      <div className="w-full h-full flex md:grid md:grid-cols-4 overflow-x-auto md:overflow-hidden snap-x snap-mandatory scrollbar-hide">
+        {HERO_SLIDES.map((slide, index) => (
+          <div
             key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`h-1 transition-all duration-500 rounded-full ${
-              index === currentSlide ? 'w-8 bg-brand-white' : 'w-2 bg-brand-white/50'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
+            className="flex-shrink-0 w-full md:w-auto h-full relative group cursor-pointer snap-center border-r border-brand-white/20 last:border-r-0 overflow-hidden"
+          >
+            <a href={slide.link} className="block w-full h-full relative">
+              <div className="absolute inset-0 transition-transform duration-[2000ms] ease-out group-hover:scale-110">
+                <img
+                  src={slide.image}
+                  alt={slide.alt}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              {/* Overlay Gradient & Title */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 md:opacity-0 md:group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end pb-12 items-center">
+                <h3 className="text-white font-serif text-3xl tracking-widest uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  {slide.title}
+                </h3>
+                <span className="text-white/80 text-xs tracking-[0.3em] uppercase mt-4 opacity-0 group-hover:opacity-100 transition-opacity delay-100 bg-white/10 px-4 py-2 hover:bg-white hover:text-black">
+                  Discover
+                </span>
+              </div>
+              {/* Always visible title on mobile (since hover doesn't exist) */}
+              <div className="absolute bottom-10 left-0 right-0 text-center md:hidden">
+                <h3 className="text-white font-serif text-3xl tracking-widest uppercase drop-shadow-lg">
+                  {slide.title}
+                </h3>
+              </div>
+            </a>
+          </div>
         ))}
       </div>
     </section>

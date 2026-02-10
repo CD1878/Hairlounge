@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-brand-white text-brand-black selection:bg-brand-taupe selection:text-white;
+    /* Mesh Gradient for "flowing" colors */
+    background-color: #F4F1EA;
+    background-image:
+      radial-gradient(at 0% 0%, hsla(38, 30%, 93%, 1) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(33, 25%, 90%, 1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(38, 20%, 88%, 1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(33, 30%, 91%, 1) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+.swiper-pagination-bullet-active {
+  background-color: theme('colors.brand.black') !important;
+}
+
+/* Enhanced blur blobs for organic feel */
+.bg-blob {
+  position: absolute;
+  filter: blur(80px);
+  z-index: -1;
+  opacity: 0.5;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(235, 229, 217, 0.8) 0%, rgba(244, 241, 234, 0) 70%);
+}
