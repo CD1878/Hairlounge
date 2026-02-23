@@ -23,10 +23,12 @@ const ServiceDetailPage: React.FC<ServiceDetailProps> = ({ title, description, i
 
             <main>
                 {/* Hero / Header Image */}
-                <div className="relative h-[60vh] overflow-hidden">
+                <div className="relative h-[60vh] overflow-hidden rounded-b-[20px]">
                     <img src={image} alt={title} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                        <h1 className="text-4xl md:text-6xl font-serif text-white tracking-wide">{title}</h1>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="bg-black/30 backdrop-blur-sm px-10 py-6 rounded-2xl shadow-2xl border border-white/10 max-w-4xl mx-4 text-center">
+                            <h1 className="text-4xl md:text-6xl font-serif text-white tracking-wide">{title}</h1>
+                        </div>
                     </div>
                 </div>
 

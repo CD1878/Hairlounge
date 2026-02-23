@@ -28,7 +28,7 @@ const GalleryPage: React.FC = () => {
 
                 {/* Main Gallery Grid */}
                 {/* Main Gallery Grid (Masonry Style) */}
-                <div className="columns-1 md:columns-2 lg:columns-3 gap-1 mb-32 space-y-1">
+                <div className="columns-1 md:columns-2 lg:columns-3 gap-4 mb-32">
                     {fullGallery.map((img, idx) => {
                         // Simulate varying aspect ratios for the "Mosaic" feel
                         const aspectClasses = [
@@ -40,7 +40,7 @@ const GalleryPage: React.FC = () => {
                         const randomAspect = aspectClasses[idx % aspectClasses.length];
 
                         return (
-                            <div key={idx} className={`break-inside-avoid group relative overflow-hidden ${randomAspect}`}>
+                            <div key={idx} className={`break-inside-avoid group relative overflow-hidden rounded-[20px] mb-4 ${randomAspect}`}>
                                 <img
                                     src={img}
                                     alt={`Gallery image ${idx + 1}`}

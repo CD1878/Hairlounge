@@ -2,7 +2,7 @@ import React from 'react';
 
 const SalonizedWidget: React.FC = () => {
     return (
-        <div className="w-full bg-brand-white py-12 md:py-16 flex flex-col items-center justify-center">
+        <div className="w-full bg-brand-white py-8 md:py-12 flex flex-col items-center justify-center">
 
             {/* Rating Number */}
             <div className="text-7xl md:text-8xl font-serif text-[#C4A48C] mb-2 leading-none">

@@ -36,8 +36,8 @@ const ContactPage: React.FC = () => {
                         {/* Opening Hours */}
                         <div className="relative pl-6 border-l-2 border-brand-taupe/30">
                             <h3 className="font-serif text-3xl mb-6 text-brand-black">Opening Hours</h3>
-                            <ul className="space-y-4 text-brand-dark/80 font-sans text-lg max-w-sm">
-                                <li className="flex justify-between items-center border-b border-gray-100 pb-3">
+                            <ul className="space-y-4 text-brand-dark/80 font-sans text-lg w-full max-w-[300px]">
+                                <li className="grid grid-cols-[100px_1fr] items-center border-b border-gray-100 pb-3">
                                     <span className="font-medium">Daily</span>
                                     <span className="text-brand-black">10:00 - 19:00</span>
                                 </li>
@@ -48,10 +48,15 @@ const ContactPage: React.FC = () => {
                         <div className="relative pl-6 border-l-2 border-brand-taupe/30">
                             <h3 className="font-serif text-3xl mb-6 text-brand-black">Contact</h3>
                             <div className="flex flex-col space-y-4 text-lg text-brand-dark/80 font-sans">
-                                <a href="tel:+31641713035" className="flex items-center hover:text-brand-taupe transition-colors group">
-                                    <i className="fa-solid fa-phone text-xs mr-4 text-brand-taupe/60 group-hover:text-brand-taupe"></i>
-                                    +31 64 171 3035
-                                </a>
+                                <div>
+                                    <a href="tel:+31641713035" className="flex items-center hover:text-brand-taupe transition-colors group">
+                                        <i className="fa-solid fa-phone text-xs mr-4 text-brand-taupe/60 group-hover:text-brand-taupe"></i>
+                                        +31 64 171 3035
+                                    </a>
+                                    <p className="text-sm text-brand-dark/50 mt-1 ml-8">
+                                        Phone bookings available between 09:00 – 18:00
+                                    </p>
+                                </div>
                                 <a href="mailto:info@hairlounge-amsterdam.nl" className="flex items-center hover:text-brand-taupe transition-colors group">
                                     <i className="fa-solid fa-envelope text-xs mr-4 text-brand-taupe/60 group-hover:text-brand-taupe"></i>
                                     info@hairlounge-amsterdam.nl
@@ -81,6 +86,21 @@ const ContactPage: React.FC = () => {
                             </button>
                         </form>
                     </div>
+                </div>
+
+                {/* Google Maps Section */}
+                <div className="mt-20 w-full h-[400px] rounded-[20px] overflow-hidden shadow-soft border border-gray-100">
+                    <iframe
+                        title="Hairlounge Amsterdam Location"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2432.529851631551!2d4.891462015802094!3d52.37305997978643!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c609c11578e937%3A0x1348877546872594!2sNieuwezijds%20Voorburgwal%20152B%2C%201012%20SJ%20Amsterdam!5e0!3m2!1sen!2snl!4v1676660000000!5m2!1sen!2snl"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        className="grayscale hover:grayscale-0 transition-all duration-500"
+                    ></iframe>
                 </div>
             </main>
             <Footer />

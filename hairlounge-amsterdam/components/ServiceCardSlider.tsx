@@ -3,7 +3,7 @@ import { GALLERY_IMAGES } from '../constants';
 
 const ServiceCardSlider: React.FC = () => {
   return (
-    <section className="py-24 md:py-40 bg-brand-white overflow-hidden" id="gallery-preview">
+    <section className="py-16 md:py-24 bg-brand-white overflow-hidden" id="gallery-preview">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
         {/* Text Side */}
@@ -28,7 +28,7 @@ const ServiceCardSlider: React.FC = () => {
           {GALLERY_IMAGES.slice(0, 3).map((img, index) => (
             <div
               key={index}
-              className={`absolute transition-all duration-700 ease-out transform hover:scale-105 hover:z-30 cursor-pointer shadow-2xl ${index === 0 ? 'z-10 rotate-[-8deg] -translate-x-12 w-64 md:w-80 h-80 md:h-[28rem] object-cover bg-gray-200' :
+              className={`absolute transition-all duration-700 ease-out transform hover:scale-105 hover:z-30 cursor-pointer shadow-2xl rounded-[20px] ${index === 0 ? 'z-10 rotate-[-8deg] -translate-x-12 w-64 md:w-80 h-80 md:h-[28rem] object-cover bg-gray-200' :
                 index === 1 ? 'z-20 rotate-[3deg] translate-x-2 -translate-y-4 w-72 md:w-96 h-96 md:h-[32rem] object-cover bg-gray-300' :
                   'z-0 rotate-[12deg] translate-x-20 md:translate-x-32 translate-y-8 w-60 md:w-80 h-72 md:h-[26rem] object-cover bg-gray-100' // index 2
                 }`}

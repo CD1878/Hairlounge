@@ -28,7 +28,7 @@ const Header: React.FC = () => {
               <img
                 src="/assets/logo/logo-horizontal.png"
                 alt="Hairlounge Amsterdam"
-                className="h-10 md:h-24 w-auto object-contain mix-blend-screen transition-all duration-300"
+                className="h-10 md:h-24 w-auto object-contain rounded-full invert transition-all duration-300"
               />
             </a>
           </div>

@@ -20,8 +20,10 @@ const AboutPage: React.FC = () => {
                         alt="Hairlounge Salon Interior"
                         className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                        <h1 className="text-5xl md:text-7xl font-serif text-white tracking-wide">Our Story</h1>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="bg-black/30 backdrop-blur-sm px-10 py-6 rounded-2xl shadow-2xl border border-white/10">
+                            <h1 className="text-5xl md:text-7xl font-serif text-white tracking-wide">Our Story</h1>
+                        </div>
                     </div>
                 </div>
 
@@ -34,21 +36,49 @@ const AboutPage: React.FC = () => {
                                 <img
                                     src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=800&q=80"
                                     alt="Stylist working"
-                                    className="rounded-sm shadow-2xl relative z-10"
+                                    className="rounded-[20px] shadow-2xl relative z-10"
                                 />
                                 <div className="absolute -bottom-6 -right-6 w-full h-full border-2 border-brand-taupe/20 -z-0"></div>
                             </div>
                         </div>
                         <div className="order-1 md:order-2">
-                            <h2 className="text-4xl md:text-5xl font-serif mb-8 text-brand-black">More Than Just Hair</h2>
+                            <h2 className="text-4xl md:text-5xl font-serif mb-8 text-brand-black">About Us</h2>
                             <p className="text-brand-dark/70 text-lg leading-relaxed mb-6 font-sans">
-                                Founded in the heart of Amsterdam, Hairlounge was born from a desire to create a sanctuary where luxury meets comfort.
-                                We believe that a haircut is not just a service—it's an experience that should leave you feeling refreshed and empowered.
+                                We are a modern salon in the heart of Amsterdam, offering quality work, relaxed experience, and results that satisfy. We work with modern, versatile techniques and place strong emphasis on keeping your hair healthy.
                             </p>
-                            <p className="text-brand-dark/70 text-lg leading-relaxed font-sans">
-                                Our philosophy is simple: listen, create, and care. We take the time to understand your unique style and needs,
-                                using only the finest sustainable products to ensure your hair stays healthy and vibrant.
+                            <p className="text-brand-dark/70 text-lg leading-relaxed mb-6 font-sans">
+                                Every appointment starts with a conversation. We listen, give clear advice, and work with you to achieve a result that suits your hair and your lifestyle.
                             </p>
+                            <p className="text-brand-dark/70 text-lg leading-relaxed mb-8 font-sans">
+                                Whether you’re coming in for maintaining your style or for a complete transformation, our goal is simple: you leave feeling confident and excited about your hair.
+                                <br /><br />
+                                <strong>No rush. No pressure. Just good hair, done properly.</strong>
+                            </p>
+
+                            <div className="grid sm:grid-cols-2 gap-8 mt-12 bg-gray-50 p-8 rounded-[20px] border border-gray-100">
+                                <div>
+                                    <h3 className="text-xl font-serif mb-4 text-brand-black">Our Philosophy</h3>
+                                    <ul className="space-y-3">
+                                        {['Listen Attentively', 'Advise honestly', 'Work precisely'].map((item) => (
+                                            <li key={item} className="flex items-center text-brand-dark/80 text-sm tracking-wide uppercase font-medium">
+                                                <span className="w-1.5 h-1.5 bg-brand-taupe rounded-full mr-3"></span>
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-serif mb-4 text-brand-black">What You Can Expect</h3>
+                                    <ul className="space-y-3">
+                                        {['Welcoming, relaxed atmosphere', 'Clear communication', 'Transparent service structure', 'Attention to detail', 'Result you feel confident about'].map((item) => (
+                                            <li key={item} className="flex items-center text-brand-dark/80 text-sm tracking-wide uppercase font-medium">
+                                                <span className="w-1.5 h-1.5 bg-brand-taupe rounded-full mr-3"></span>
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -67,7 +97,7 @@ const AboutPage: React.FC = () => {
                                 { name: 'Emma', role: 'Color Specialist', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80' }
                             ].map((member, i) => (
                                 <div key={i} className="group cursor-pointer">
-                                    <div className="relative overflow-hidden rounded-[2.5rem] mb-6 bg-gray-100 aspect-[3/4]">
+                                    <div className="relative overflow-hidden rounded-[20px] mb-6 bg-gray-100 aspect-[3/4]">
                                         <img
                                             src={member.img}
                                             alt={member.name}

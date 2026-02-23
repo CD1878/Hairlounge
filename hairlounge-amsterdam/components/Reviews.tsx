@@ -10,7 +10,7 @@ const Reviews: React.FC = () => {
   const featuredReviews = REVIEWS.slice(0, 3);
 
   return (
-    <section className="py-24 md:py-32 bg-brand-white" id="reviews">
+    <section className="py-16 md:py-24 bg-brand-white" id="reviews">
       <div className="max-w-7xl mx-auto px-6 text-center">
         <h2 className="text-3xl md:text-5xl font-serif mb-16 text-brand-black">What Clients Say</h2>
 
@@ -60,7 +60,7 @@ const Reviews: React.FC = () => {
           <Swiper
             modules={[Autoplay, Pagination]}
             spaceBetween={20}
-            slidesPerView={1.1}
+            slidesPerView={1}
             centeredSlides={true}
             loop={true}
             autoplay={{ delay: 5000 }}

@@ -98,12 +98,10 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-white/30 uppercase tracking-widest">
-        <p>&copy; {new Date().getFullYear()} HA. All rights reserved.</p>
-        <div className="flex space-x-8 mt-4 md:mt-0">
-          <a href="#" className="hover:text-white transition-colors">Privacy</a>
-          <a href="#" className="hover:text-white transition-colors">Terms</a>
-        </div>
+      <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/10 flex items-center justify-center text-xs text-brand-taupe/80 uppercase tracking-widest">
+        <p>
+          &copy; {new Date().getFullYear()} Hairlounge Amsterdam. All rights reserved <span className="mx-1">|</span> Made by <a href="https://www.chefdigital.nl" target="_blank" rel="noopener noreferrer" className="border-b border-brand-taupe/80 hover:text-white hover:border-white transition-all">Chef Digital</a>
+        </p>
       </div>
     </footer>
   );
