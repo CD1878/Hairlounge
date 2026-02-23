@@ -8,25 +8,48 @@ const ServicesList: React.FC = () => {
     if (activeId === id) {
       setActiveId(null);
     } else {
+      const element = document.getElementById(id);
+      let offsetPosition = 0;
+
+      if (element) {
+        const headerOffset = 100;
+        let elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+
+        // If another item is currently open AND it is physically above the item we are clicking,
+        // we need to subtract its expanded height because it is about to collapse,
+        // which would otherwise shift our target completely out of position.
+        if (activeId) {
+          const activeElement = document.getElementById(activeId);
+          if (activeElement) {
+            const activePosition = activeElement.getBoundingClientRect().top + window.pageYOffset;
+
+            // Only adjust if the active element is above the new one
+            if (activePosition < elementPosition) {
+              // The body of the accordion is the second child (the first is the header)
+              const activeBody = activeElement.lastElementChild;
+              if (activeBody) {
+                // Subtract the height of the collapsing content
+                elementPosition -= activeBody.getBoundingClientRect().height;
+              }
+            }
+          }
+        }
+
+        offsetPosition = elementPosition - headerOffset;
+      }
+
       setActiveId(id);
 
-      // The accordion has a duration-500 transition. 
-      // If we scroll immediately, the browser calculates the position 
-      // while the old item is still tall. By waiting for the transition to finish,
-      // the new item will be in its final position, ensuring we scroll exactly to the top.
-      setTimeout(() => {
-        const element = document.getElementById(id);
-        if (element) {
-          const headerOffset = 100; // Account for sticky header
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
+      // Scroll immediately, but wait exactly 1 frame for React to mount the empty element
+      // so the browser can calculate the scroll target without visual jumping.
+      if (element) {
+        setTimeout(() => {
           window.scrollTo({
             top: offsetPosition,
             behavior: 'smooth'
           });
-        }
-      }, 520); // Wait just past the 500ms transition duration
+        }, 10);
+      }
     }
   };
 
