@@ -28,7 +28,7 @@ const ServicesList: React.FC = () => {
       if (element) {
         // Record the element's exact screen position the moment it's clicked
         const startTop = element.getBoundingClientRect().top;
-        const targetTop = 100; // Account for the sticky header
+        const targetTop = window.innerWidth >= 768 ? 130 : 100; // Account for the sticky header (h-28 = 112px on md, h-20 = 80px on mobile)
         const startTime = performance.now();
         const duration = 500; // Matches tailwind duration-500
 

@@ -28,7 +28,7 @@ const ServicePageCarousel: React.FC = () => {
                     header.click();
                 } else {
                     // Scroll directly natively
-                    const headerOffset = 100;
+                    const headerOffset = window.innerWidth >= 768 ? 130 : 100;
                     const elementPosition = accordionElement.getBoundingClientRect().top + window.pageYOffset;
                     window.scrollTo({
                         top: elementPosition - headerOffset,
