@@ -66,6 +66,56 @@ const ServicePageCarousel: React.FC = () => {
         };
     }, []);
 
+    // Also purely update the visuals directly into the DOM so that cloned Swiper
+    // slides (which are untouched by React renders) physically show as active/dimmed.
+    useEffect(() => {
+        if (!swiperRef.current) return;
+
+        const cards = swiperRef.current.querySelectorAll('.service-card') as NodeListOf<HTMLElement>;
+
+        cards.forEach(card => {
+            const id = card.getAttribute('data-service-id');
+            const isHovered = hoveredId === id;
+            const isDimmed = hoveredId !== null && !isHovered;
+
+            // Wrap the card scale & dim
+            if (isHovered) {
+                card.classList.remove('scale-90', 'opacity-40', 'blur-[1px]', 'scale-100');
+                card.classList.add('scale-110', 'opacity-100', 'z-10');
+            } else if (isDimmed) {
+                card.classList.remove('scale-110', 'z-10', 'scale-100', 'opacity-100');
+                card.classList.add('scale-90', 'opacity-40', 'blur-[1px]');
+            } else {
+                card.classList.remove('scale-110', 'z-10', 'scale-90', 'opacity-40', 'blur-[1px]');
+                card.classList.add('scale-100', 'opacity-100');
+            }
+
+            // Text Dropdown
+            const textContainer = card.querySelector('.service-text-container');
+            if (textContainer) {
+                if (isHovered) {
+                    textContainer.classList.remove('max-h-0', 'opacity-0', 'mt-0');
+                    textContainer.classList.add('max-h-48', 'opacity-100', 'mt-1');
+                } else {
+                    textContainer.classList.remove('max-h-48', 'opacity-100', 'mt-1');
+                    textContainer.classList.add('max-h-0', 'opacity-0', 'mt-0');
+                }
+            }
+
+            // Arrow indicator
+            const arrowIcon = card.querySelector('.service-arrow');
+            if (arrowIcon) {
+                if (isHovered) {
+                    arrowIcon.classList.remove('opacity-0', 'translate-y-2');
+                    arrowIcon.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    arrowIcon.classList.remove('opacity-100', 'translate-y-0');
+                    arrowIcon.classList.add('opacity-0', 'translate-y-2');
+                }
+            }
+        });
+    }, [hoveredId]);
+
     const handleCardClick = (id: string, isDesktop: boolean = false) => {
         // Automatically make sure this card becomes hovered/expanded
         setHoveredId(id);
@@ -136,8 +186,8 @@ const ServicePageCarousel: React.FC = () => {
                         className="service-page-carousel pb-12 !overflow-visible"
                     >
                         {SERVICE_CAROUSEL_ITEMS.map((item) => {
-                            const isHovered = hoveredId === item.id;
-                            const isDimmed = hoveredId !== null && !isHovered;
+                            // Note: dynamic React classes are removed. State is handled completely
+                            // bypass by the useEffect DOM update above to guarantee clones update identically.
 
                             return (
                                 <SwiperSlide key={item.id} className="h-auto">
@@ -145,12 +195,7 @@ const ServicePageCarousel: React.FC = () => {
                                         data-service-id={item.id}
                                         onMouseEnter={() => setHoveredId(item.id)}
                                         onClick={() => handleCardClick(item.id)}
-                                        className={`service-card flex flex-col items-center text-center cursor-pointer group/card transition-all duration-500 ease-out ${isHovered
-                                            ? 'scale-110 opacity-100 z-10'
-                                            : isDimmed
-                                                ? 'scale-90 opacity-40 blur-[1px]'
-                                                : 'scale-100 opacity-100'
-                                            }`}
+                                        className="service-card flex flex-col items-center text-center cursor-pointer group/card transition-all duration-500 ease-out scale-100 opacity-100"
                                     >
                                         {/* Circular Image Container */}
                                         <div className="w-48 h-48 md:w-56 md:h-56 rounded-[20px] overflow-hidden shadow-xl mb-6 border-4 border-white relative">
@@ -165,15 +210,14 @@ const ServicePageCarousel: React.FC = () => {
                                         {/* Text */}
                                         <h3 className="text-xl md:text-2xl font-serif mb-2 text-brand-black group-hover/card:text-brand-taupe transition-colors">{item.title}</h3>
 
-                                        <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isHovered ? 'max-h-48 opacity-100 mt-1' : 'max-h-0 opacity-0 mt-0'}`}>
+                                        <div className="service-text-container overflow-hidden transition-all duration-500 ease-in-out max-h-0 opacity-0 mt-0">
                                             <p className="text-sm text-brand-dark/60 leading-relaxed max-w-[200px]">
                                                 {item.description}
                                             </p>
                                         </div>
 
                                         {/* Arrow Icon */}
-                                        <div className={`mt-2 transform transition-all duration-300 text-brand-taupe ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                                            }`}>
+                                        <div className="service-arrow mt-2 transform transition-all duration-300 text-brand-taupe opacity-0 translate-y-2">
                                             <i className="fa-solid fa-arrow-down"></i>
                                         </div>
                                     </div>
