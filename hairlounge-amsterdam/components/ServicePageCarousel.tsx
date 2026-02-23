@@ -23,6 +23,14 @@ const ServicePageCarousel: React.FC = () => {
         }
     };
 
+    const handleCardClick = (id: string) => {
+        if (hoveredId === id) {
+            scrollToService(id);
+        } else {
+            setHoveredId(id);
+        }
+    };
+
     return (
         <section className="py-12 md:py-20 bg-brand-white border-b border-brand-black/5" id="explore-menu">
             <div className="max-w-7xl mx-auto px-6">
@@ -39,6 +47,12 @@ const ServicePageCarousel: React.FC = () => {
                         centeredSlides={true}
                         loop={true}
                         speed={800}
+                        onSlideChange={(swiper) => {
+                            const currentItem = SERVICE_CAROUSEL_ITEMS[swiper.realIndex];
+                            if (currentItem) {
+                                setHoveredId(currentItem.id);
+                            }
+                        }}
                         navigation={{
                             nextEl: '.swiper-button-next-svc',
                             prevEl: '.swiper-button-prev-svc',
@@ -68,7 +82,7 @@ const ServicePageCarousel: React.FC = () => {
                                 <SwiperSlide key={item.id} className="h-auto">
                                     <div
                                         onMouseEnter={() => setHoveredId(item.id)}
-                                        onClick={() => scrollToService(item.id)}
+                                        onClick={() => handleCardClick(item.id)}
                                         className={`flex flex-col items-center text-center cursor-pointer group/card transition-all duration-500 ease-out ${isHovered
                                             ? 'scale-110 opacity-100 z-10'
                                             : isDimmed

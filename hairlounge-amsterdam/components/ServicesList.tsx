@@ -4,6 +4,28 @@ import { TEXT_SERVICES } from '../constants';
 const ServicesList: React.FC = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
 
+  const handleAccordionClick = (id: string) => {
+    if (activeId === id) {
+      setActiveId(null);
+    } else {
+      setActiveId(id);
+      // Wait for React to update state and start the CSS transition, then scroll
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          const headerOffset = 100; // Account for sticky header
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    }
+  };
+
   return (
     <section className="py-24 md:py-32 bg-brand-sand/30" id="services">
       <div className="max-w-7xl mx-auto px-6">
@@ -58,14 +80,14 @@ const ServicesList: React.FC = () => {
                 key={service.id}
                 id={service.id}
                 className={`relative py-8 md:py-10 px-6 md:px-10 border-b border-brand-dark/5 transition-all duration-500 ease-out bg-white rounded-[20px] ${activeId === service.id
-                    ? 'shadow-xl -my-2 z-10 border border-brand-taupe/20'
-                    : 'shadow-sm hover:shadow-md hover:-translate-y-1'
+                  ? 'shadow-xl -my-2 z-10 border border-brand-taupe/20'
+                  : 'shadow-sm hover:shadow-md hover:-translate-y-1'
                   }`}
               >
                 {/* Accordion Header */}
                 <div
                   className="flex justify-between items-center cursor-pointer group"
-                  onClick={() => setActiveId(activeId === service.id ? null : service.id)}
+                  onClick={() => handleAccordionClick(service.id)}
                 >
                   <h3 className="text-2xl md:text-3xl font-serif text-brand-black group-hover:text-brand-taupe transition-colors">
                     {service.title}
