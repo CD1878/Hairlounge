@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -8,6 +8,63 @@ import { SERVICE_CAROUSEL_ITEMS } from '../constants';
 
 const ServicePageCarousel: React.FC = () => {
     const [hoveredId, setHoveredId] = useState<string | null>('signature-packages');
+    const swiperRef = useRef<HTMLDivElement>(null);
+
+    // Fix for Swiper loop + React events:
+    // Swiper clones DOM nodes for infinite loop, which strips React event listeners.
+    // We manually attach native DOM listeners to these cloned elements.
+    useEffect(() => {
+        if (!swiperRef.current) return;
+
+        const handleDuplicateClick = (e: MouseEvent) => {
+            const target = e.currentTarget as HTMLElement;
+            const id = target.getAttribute('data-service-id');
+            if (id) handleCardClick(id, true);
+        };
+
+        const handleDuplicateEnter = (e: MouseEvent) => {
+            const target = e.currentTarget as HTMLElement;
+            const id = target.getAttribute('data-service-id');
+            if (id) setHoveredId(id);
+        };
+
+        const attachListenersToClones = () => {
+            // Find all swiper slides (including clones)
+            const cards = swiperRef.current?.querySelectorAll('.service-card') as NodeListOf<HTMLElement>;
+            cards?.forEach(card => {
+                // Remove old listeners to prevent duplicates
+                card.removeEventListener('click', handleDuplicateClick);
+                card.removeEventListener('mouseenter', handleDuplicateEnter);
+
+                // Re-attach
+                card.addEventListener('click', handleDuplicateClick);
+                card.addEventListener('mouseenter', handleDuplicateEnter);
+            });
+        };
+
+        // Attach initially after a short delay to ensure Swiper has mounted clones
+        const timeout = setTimeout(attachListenersToClones, 500);
+
+        // Also listen for DOM changes in case Swiper recreates clones on resize
+        const observer = new MutationObserver((mutations) => {
+            attachListenersToClones();
+        });
+
+        const swiperContainer = swiperRef.current.querySelector('.swiper-wrapper');
+        if (swiperContainer) {
+            observer.observe(swiperContainer, { childList: true });
+        }
+
+        return () => {
+            clearTimeout(timeout);
+            observer.disconnect();
+            const cards = swiperRef.current?.querySelectorAll('.service-card') as NodeListOf<HTMLElement>;
+            cards?.forEach(card => {
+                card.removeEventListener('click', handleDuplicateClick);
+                card.removeEventListener('mouseenter', handleDuplicateEnter);
+            });
+        };
+    }, []);
 
     const handleCardClick = (id: string, isDesktop: boolean = false) => {
         // Automatically make sure this card becomes hovered/expanded
@@ -43,18 +100,16 @@ const ServicePageCarousel: React.FC = () => {
                     <p className="text-brand-dark/60">Click a service to view details</p>
                 </div>
 
-                <div className="relative group px-4 md:px-12">
+                <div className="relative group px-4 md:px-12" ref={swiperRef}>
                     <Swiper
                         modules={[Navigation, Autoplay, Pagination]}
                         spaceBetween={30}
                         slidesPerView={1.2}
                         centeredSlides={true}
-                        // Disabling loop crucially fixes a known Swiper/React bug where cloned DOM slides
-                        // lose their React event listeners (`onMouseEnter` and `onClick` wouldn't fire).
-                        loop={false}
+                        loop={true}
                         speed={800}
                         onSlideChange={(swiper) => {
-                            const currentItem = SERVICE_CAROUSEL_ITEMS[swiper.activeIndex];
+                            const currentItem = SERVICE_CAROUSEL_ITEMS[swiper.realIndex];
                             if (currentItem) {
                                 setHoveredId(currentItem.id);
                             }
@@ -87,9 +142,10 @@ const ServicePageCarousel: React.FC = () => {
                             return (
                                 <SwiperSlide key={item.id} className="h-auto">
                                     <div
+                                        data-service-id={item.id}
                                         onMouseEnter={() => setHoveredId(item.id)}
                                         onClick={() => handleCardClick(item.id)}
-                                        className={`flex flex-col items-center text-center cursor-pointer group/card transition-all duration-500 ease-out ${isHovered
+                                        className={`service-card flex flex-col items-center text-center cursor-pointer group/card transition-all duration-500 ease-out ${isHovered
                                             ? 'scale-110 opacity-100 z-10'
                                             : isDimmed
                                                 ? 'scale-90 opacity-40 blur-[1px]'
