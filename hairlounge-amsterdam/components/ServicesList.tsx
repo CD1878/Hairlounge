@@ -1,55 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { TEXT_SERVICES } from '../constants';
 
 const ServicesList: React.FC = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const scrollAnimationRef = useRef<number | null>(null);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollAnimationRef.current !== null) {
+        cancelAnimationFrame(scrollAnimationRef.current);
+      }
+    };
+  }, []);
 
   const handleAccordionClick = (id: string) => {
+    // Cancel any ongoing scroll to prevent jitter
+    if (scrollAnimationRef.current !== null) {
+      cancelAnimationFrame(scrollAnimationRef.current);
+    }
+
     if (activeId === id) {
       setActiveId(null);
     } else {
       const element = document.getElementById(id);
-      let offsetPosition = 0;
 
       if (element) {
-        const headerOffset = 100;
-        let elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        // Record the element's exact screen position the moment it's clicked
+        const startTop = element.getBoundingClientRect().top;
+        const targetTop = 100; // Account for the sticky header
+        const startTime = performance.now();
+        const duration = 500; // Matches tailwind duration-500
 
-        // If another item is currently open AND it is physically above the item we are clicking,
-        // we need to subtract its expanded height because it is about to collapse,
-        // which would otherwise shift our target completely out of position.
-        if (activeId) {
-          const activeElement = document.getElementById(activeId);
-          if (activeElement) {
-            const activePosition = activeElement.getBoundingClientRect().top + window.pageYOffset;
+        // This loop functions as a custom smooth scroller that perfectly tracks
+        // the element even while the DOM layout is actively shifting around it.
+        const animateScroll = (currentTime: number) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
 
-            // Only adjust if the active element is above the new one
-            if (activePosition < elementPosition) {
-              // The body of the accordion is the second child (the first is the header)
-              const activeBody = activeElement.lastElementChild;
-              if (activeBody) {
-                // Subtract the height of the collapsing content
-                elementPosition -= activeBody.getBoundingClientRect().height;
-              }
-            }
+          // Smooth ease-out cubic curve
+          const ease = 1 - Math.pow(1 - progress, 3);
+
+          // Where exactly should the element be on screen RIGHT NOW?
+          const currentDesiredTop = startTop + (targetTop - startTop) * ease;
+
+          // Where is it ACTUALLY right now (accounting for other items closing/opening)?
+          const actualTop = element.getBoundingClientRect().top;
+
+          // Scroll the window by the exact difference to force it to lock to our curve
+          window.scrollBy(0, actualTop - currentDesiredTop);
+
+          if (progress < 1) {
+            scrollAnimationRef.current = requestAnimationFrame(animateScroll);
           }
-        }
+        };
 
-        offsetPosition = elementPosition - headerOffset;
+        scrollAnimationRef.current = requestAnimationFrame(animateScroll);
       }
 
+      // Trigger the state and the CSS transition
       setActiveId(id);
-
-      // Scroll immediately, but wait exactly 1 frame for React to mount the empty element
-      // so the browser can calculate the scroll target without visual jumping.
-      if (element) {
-        setTimeout(() => {
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-        }, 10);
-      }
     }
   };
 
