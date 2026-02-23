@@ -61,76 +61,92 @@ const ServicePageCarousel: React.FC = () => {
                 const isHovered = hoveredIdRef.current === id;
                 const isDimmed = hoveredIdRef.current !== null && !isHovered;
 
-                // Wrap the card scale & dim
+                // Enforce visually dominant inline styles to avoid Tailwind compilation/purging issues on dynamic classes
+                card.style.transition = 'all 500ms ease-out';
+
                 if (isHovered) {
-                    card.classList.remove('scale-90', 'opacity-40', 'blur-[1px]', 'scale-100');
-                    card.classList.add('scale-110', 'opacity-100', 'z-10');
+                    card.style.transform = 'scale(1.1)';
+                    card.style.opacity = '1';
+                    card.style.filter = 'none';
+                    card.style.zIndex = '10';
                 } else if (isDimmed) {
-                    card.classList.remove('scale-110', 'z-10', 'scale-100', 'opacity-100');
-                    card.classList.add('scale-90', 'opacity-40', 'blur-[1px]');
+                    card.style.transform = 'scale(0.9)';
+                    card.style.opacity = '0.4';
+                    card.style.filter = 'blur(1px)';
+                    card.style.zIndex = '1';
                 } else {
-                    card.classList.remove('scale-110', 'z-10', 'scale-90', 'opacity-40', 'blur-[1px]');
-                    card.classList.add('scale-100', 'opacity-100');
+                    card.style.transform = 'scale(1)';
+                    card.style.opacity = '1';
+                    card.style.filter = 'none';
+                    card.style.zIndex = '1';
                 }
 
                 // Text Dropdown
-                const textContainer = card.querySelector('.service-text-container');
+                const textContainer = card.querySelector('.service-text-container') as HTMLElement | null;
                 if (textContainer) {
+                    textContainer.style.transition = 'all 500ms ease-in-out';
                     if (isHovered) {
-                        textContainer.classList.remove('max-h-0', 'opacity-0', 'mt-0');
-                        textContainer.classList.add('max-h-48', 'opacity-100', 'mt-1');
+                        textContainer.style.maxHeight = '12rem';
+                        textContainer.style.opacity = '1';
+                        textContainer.style.marginTop = '0.25rem';
                     } else {
-                        textContainer.classList.remove('max-h-48', 'opacity-100', 'mt-1');
-                        textContainer.classList.add('max-h-0', 'opacity-0', 'mt-0');
+                        textContainer.style.maxHeight = '0px';
+                        textContainer.style.opacity = '0';
+                        textContainer.style.marginTop = '0px';
                     }
                 }
 
                 // Arrow indicator
-                const arrowIcon = card.querySelector('.service-arrow');
+                const arrowIcon = card.querySelector('.service-arrow') as HTMLElement | null;
                 if (arrowIcon) {
+                    arrowIcon.style.transition = 'all 300ms ease';
                     if (isHovered) {
-                        arrowIcon.classList.remove('opacity-0', 'translate-y-2');
-                        arrowIcon.classList.add('opacity-100', 'translate-y-0');
+                        arrowIcon.style.opacity = '1';
+                        arrowIcon.style.transform = 'translateY(0)';
                     } else {
-                        arrowIcon.classList.remove('opacity-100', 'translate-y-0');
-                        arrowIcon.classList.add('opacity-0', 'translate-y-2');
+                        arrowIcon.style.opacity = '0';
+                        arrowIcon.style.transform = 'translateY(0.5rem)';
                     }
                 }
             });
         };
 
-        const attachListenersToClones = () => {
-            // Attach securely to ALL slides to bypass React virtual DOM disconnections
-            const cards = swiperRef.current?.querySelectorAll('.service-card') as NodeListOf<HTMLElement>;
-            cards?.forEach(card => {
-                card.removeEventListener('click', handleClick);
-                card.removeEventListener('mouseenter', handleEnter);
-
-                card.addEventListener('click', handleClick);
-                card.addEventListener('mouseenter', handleEnter);
-            });
-            updateVisuals();
+        // Event Delegation handlers - these attach to the stable container and catch
+        // events perfectly even if Swiper entirely deletes and recreates its children!
+        const handleMouseOver = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const card = target.closest('.service-card') as HTMLElement;
+            if (card) {
+                const id = card.getAttribute('data-service-id');
+                if (id && hoveredIdRef.current !== id) {
+                    hoveredIdRef.current = id;
+                    updateVisuals();
+                }
+            }
         };
 
-        const timeout = setTimeout(attachListenersToClones, 500);
+        const handleMouseClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const card = target.closest('.service-card') as HTMLElement;
+            if (card) {
+                const id = card.getAttribute('data-service-id');
+                if (id) {
+                    handleCardClickNative(id);
+                }
+            }
+        };
 
-        const observer = new MutationObserver((mutations) => {
-            attachListenersToClones();
-        });
+        const container = swiperRef.current;
+        container.addEventListener('mouseover', handleMouseOver);
+        container.addEventListener('click', handleMouseClick);
 
-        const swiperContainer = swiperRef.current.querySelector('.swiper-wrapper');
-        if (swiperContainer) {
-            observer.observe(swiperContainer, { childList: true });
-        }
+        // Apply initial visual state shortly after mount
+        const timeout = setTimeout(updateVisuals, 100);
 
         return () => {
             clearTimeout(timeout);
-            observer.disconnect();
-            const cards = swiperRef.current?.querySelectorAll('.service-card') as NodeListOf<HTMLElement>;
-            cards?.forEach(card => {
-                card.removeEventListener('click', handleClick);
-                card.removeEventListener('mouseenter', handleEnter);
-            });
+            container.removeEventListener('mouseover', handleMouseOver);
+            container.removeEventListener('click', handleMouseClick);
         };
     }, []);
 
