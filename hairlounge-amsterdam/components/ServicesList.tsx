@@ -9,7 +9,11 @@ const ServicesList: React.FC = () => {
       setActiveId(null);
     } else {
       setActiveId(id);
-      // Wait for React to update state and start the CSS transition, then scroll
+
+      // The accordion has a duration-500 transition. 
+      // If we scroll immediately, the browser calculates the position 
+      // while the old item is still tall. By waiting for the transition to finish,
+      // the new item will be in its final position, ensuring we scroll exactly to the top.
       setTimeout(() => {
         const element = document.getElementById(id);
         if (element) {
@@ -22,7 +26,7 @@ const ServicesList: React.FC = () => {
             behavior: 'smooth'
           });
         }
-      }, 100);
+      }, 520); // Wait just past the 500ms transition duration
     }
   };
 
