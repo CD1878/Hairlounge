@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -7,45 +7,113 @@ import 'swiper/css/pagination';
 import { SERVICE_CAROUSEL_ITEMS } from '../constants';
 
 const ServicePageCarousel: React.FC = () => {
-    const [hoveredId, setHoveredId] = useState<string | null>('signature-packages');
     const swiperRef = useRef<HTMLDivElement>(null);
+    const hoveredIdRef = useRef<string | null>('signature-packages');
 
-    // Fix for Swiper loop + React events:
-    // Swiper clones DOM nodes for infinite loop, which strips React event listeners.
-    // We manually attach native DOM listeners to these cloned elements.
     useEffect(() => {
         if (!swiperRef.current) return;
 
-        const handleDuplicateClick = (e: MouseEvent) => {
-            const target = e.currentTarget as HTMLElement;
-            const id = target.getAttribute('data-service-id');
-            if (id) handleCardClick(id, true);
+        const handleCardClickNative = (id: string) => {
+            hoveredIdRef.current = id;
+            updateVisuals();
+
+            const accordionElement = document.getElementById(id);
+            if (accordionElement) {
+                const header = accordionElement.querySelector('.cursor-pointer') as HTMLElement;
+                const bodyDiv = accordionElement.lastElementChild;
+                const isClosed = bodyDiv && bodyDiv.classList.contains('max-h-0');
+
+                if (isClosed && header) {
+                    // Start opening the accordion header visually natively
+                    header.click();
+                } else {
+                    // Scroll directly natively
+                    const headerOffset = 100;
+                    const elementPosition = accordionElement.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({
+                        top: elementPosition - headerOffset,
+                        behavior: 'smooth'
+                    });
+                }
+            }
         };
 
-        const handleDuplicateEnter = (e: MouseEvent) => {
+        const handleClick = (e: MouseEvent) => {
             const target = e.currentTarget as HTMLElement;
             const id = target.getAttribute('data-service-id');
-            if (id) setHoveredId(id);
+            if (id) handleCardClickNative(id);
         };
 
-        const attachListenersToClones = () => {
-            // Find all swiper slides (including clones)
+        const handleEnter = (e: MouseEvent) => {
+            const target = e.currentTarget as HTMLElement;
+            const id = target.getAttribute('data-service-id');
+            if (id) {
+                hoveredIdRef.current = id;
+                updateVisuals();
+            }
+        };
+
+        const updateVisuals = () => {
             const cards = swiperRef.current?.querySelectorAll('.service-card') as NodeListOf<HTMLElement>;
-            cards?.forEach(card => {
-                // Remove old listeners to prevent duplicates
-                card.removeEventListener('click', handleDuplicateClick);
-                card.removeEventListener('mouseenter', handleDuplicateEnter);
 
-                // Re-attach
-                card.addEventListener('click', handleDuplicateClick);
-                card.addEventListener('mouseenter', handleDuplicateEnter);
+            cards?.forEach(card => {
+                const id = card.getAttribute('data-service-id');
+                const isHovered = hoveredIdRef.current === id;
+                const isDimmed = hoveredIdRef.current !== null && !isHovered;
+
+                // Wrap the card scale & dim
+                if (isHovered) {
+                    card.classList.remove('scale-90', 'opacity-40', 'blur-[1px]', 'scale-100');
+                    card.classList.add('scale-110', 'opacity-100', 'z-10');
+                } else if (isDimmed) {
+                    card.classList.remove('scale-110', 'z-10', 'scale-100', 'opacity-100');
+                    card.classList.add('scale-90', 'opacity-40', 'blur-[1px]');
+                } else {
+                    card.classList.remove('scale-110', 'z-10', 'scale-90', 'opacity-40', 'blur-[1px]');
+                    card.classList.add('scale-100', 'opacity-100');
+                }
+
+                // Text Dropdown
+                const textContainer = card.querySelector('.service-text-container');
+                if (textContainer) {
+                    if (isHovered) {
+                        textContainer.classList.remove('max-h-0', 'opacity-0', 'mt-0');
+                        textContainer.classList.add('max-h-48', 'opacity-100', 'mt-1');
+                    } else {
+                        textContainer.classList.remove('max-h-48', 'opacity-100', 'mt-1');
+                        textContainer.classList.add('max-h-0', 'opacity-0', 'mt-0');
+                    }
+                }
+
+                // Arrow indicator
+                const arrowIcon = card.querySelector('.service-arrow');
+                if (arrowIcon) {
+                    if (isHovered) {
+                        arrowIcon.classList.remove('opacity-0', 'translate-y-2');
+                        arrowIcon.classList.add('opacity-100', 'translate-y-0');
+                    } else {
+                        arrowIcon.classList.remove('opacity-100', 'translate-y-0');
+                        arrowIcon.classList.add('opacity-0', 'translate-y-2');
+                    }
+                }
             });
         };
 
-        // Attach initially after a short delay to ensure Swiper has mounted clones
+        const attachListenersToClones = () => {
+            // Attach securely to ALL slides to bypass React virtual DOM disconnections
+            const cards = swiperRef.current?.querySelectorAll('.service-card') as NodeListOf<HTMLElement>;
+            cards?.forEach(card => {
+                card.removeEventListener('click', handleClick);
+                card.removeEventListener('mouseenter', handleEnter);
+
+                card.addEventListener('click', handleClick);
+                card.addEventListener('mouseenter', handleEnter);
+            });
+            updateVisuals();
+        };
+
         const timeout = setTimeout(attachListenersToClones, 500);
 
-        // Also listen for DOM changes in case Swiper recreates clones on resize
         const observer = new MutationObserver((mutations) => {
             attachListenersToClones();
         });
@@ -60,87 +128,11 @@ const ServicePageCarousel: React.FC = () => {
             observer.disconnect();
             const cards = swiperRef.current?.querySelectorAll('.service-card') as NodeListOf<HTMLElement>;
             cards?.forEach(card => {
-                card.removeEventListener('click', handleDuplicateClick);
-                card.removeEventListener('mouseenter', handleDuplicateEnter);
+                card.removeEventListener('click', handleClick);
+                card.removeEventListener('mouseenter', handleEnter);
             });
         };
     }, []);
-
-    // Also purely update the visuals directly into the DOM so that cloned Swiper
-    // slides (which are untouched by React renders) physically show as active/dimmed.
-    useEffect(() => {
-        if (!swiperRef.current) return;
-
-        const cards = swiperRef.current.querySelectorAll('.service-card') as NodeListOf<HTMLElement>;
-
-        cards.forEach(card => {
-            const id = card.getAttribute('data-service-id');
-            const isHovered = hoveredId === id;
-            const isDimmed = hoveredId !== null && !isHovered;
-
-            // Wrap the card scale & dim
-            if (isHovered) {
-                card.classList.remove('scale-90', 'opacity-40', 'blur-[1px]', 'scale-100');
-                card.classList.add('scale-110', 'opacity-100', 'z-10');
-            } else if (isDimmed) {
-                card.classList.remove('scale-110', 'z-10', 'scale-100', 'opacity-100');
-                card.classList.add('scale-90', 'opacity-40', 'blur-[1px]');
-            } else {
-                card.classList.remove('scale-110', 'z-10', 'scale-90', 'opacity-40', 'blur-[1px]');
-                card.classList.add('scale-100', 'opacity-100');
-            }
-
-            // Text Dropdown
-            const textContainer = card.querySelector('.service-text-container');
-            if (textContainer) {
-                if (isHovered) {
-                    textContainer.classList.remove('max-h-0', 'opacity-0', 'mt-0');
-                    textContainer.classList.add('max-h-48', 'opacity-100', 'mt-1');
-                } else {
-                    textContainer.classList.remove('max-h-48', 'opacity-100', 'mt-1');
-                    textContainer.classList.add('max-h-0', 'opacity-0', 'mt-0');
-                }
-            }
-
-            // Arrow indicator
-            const arrowIcon = card.querySelector('.service-arrow');
-            if (arrowIcon) {
-                if (isHovered) {
-                    arrowIcon.classList.remove('opacity-0', 'translate-y-2');
-                    arrowIcon.classList.add('opacity-100', 'translate-y-0');
-                } else {
-                    arrowIcon.classList.remove('opacity-100', 'translate-y-0');
-                    arrowIcon.classList.add('opacity-0', 'translate-y-2');
-                }
-            }
-        });
-    }, [hoveredId]);
-
-    const handleCardClick = (id: string, isDesktop: boolean = false) => {
-        // Automatically make sure this card becomes hovered/expanded
-        setHoveredId(id);
-
-        const accordionElement = document.getElementById(id);
-        if (accordionElement) {
-            const header = accordionElement.querySelector('.cursor-pointer') as HTMLElement;
-            const bodyDiv = accordionElement.lastElementChild;
-            const isClosed = bodyDiv && bodyDiv.classList.contains('max-h-0');
-
-            if (isClosed && header) {
-                // By clicking the header, the ServicesList component's brilliant
-                // frame-perfect custom scroller kicks in exactly as we want it!
-                header.click();
-            } else {
-                // If the accordion is already open, just slide the view down smoothly
-                const headerOffset = 100;
-                const elementPosition = accordionElement.getBoundingClientRect().top + window.pageYOffset;
-                window.scrollTo({
-                    top: elementPosition - headerOffset,
-                    behavior: 'smooth'
-                });
-            }
-        }
-    };
 
     return (
         <section className="py-12 md:py-20 bg-brand-white border-b border-brand-black/5" id="explore-menu">
@@ -159,9 +151,22 @@ const ServicePageCarousel: React.FC = () => {
                         loop={true}
                         speed={800}
                         onSlideChange={(swiper) => {
+                            // Update via direct CSS, not React state
                             const currentItem = SERVICE_CAROUSEL_ITEMS[swiper.realIndex];
                             if (currentItem) {
-                                setHoveredId(currentItem.id);
+                                hoveredIdRef.current = currentItem.id;
+                                // Need to trigger updateVisuals here, but we can't easily access the inner function
+                                // Instead, we dispatch a custom event or just let the Swiper loop do its thing.
+                                // Actually, since we only use realIndex for centering, let's just use DOM:
+                                const el = swiper.slides[swiper.activeIndex]?.querySelector('.service-card') as HTMLElement;
+                                if (el) {
+                                    const id = el.getAttribute('data-service-id');
+                                    if (id) {
+                                        hoveredIdRef.current = id;
+                                        // The easiest hack to run updateVisuals is dispatching a mouseenter to self
+                                        el.dispatchEvent(new Event('mouseenter'));
+                                    }
+                                }
                             }
                         }}
                         navigation={{
@@ -193,8 +198,6 @@ const ServicePageCarousel: React.FC = () => {
                                 <SwiperSlide key={item.id} className="h-auto">
                                     <div
                                         data-service-id={item.id}
-                                        onMouseEnter={() => setHoveredId(item.id)}
-                                        onClick={() => handleCardClick(item.id)}
                                         className="service-card flex flex-col items-center text-center cursor-pointer group/card transition-all duration-500 ease-out scale-100 opacity-100"
                                     >
                                         {/* Circular Image Container */}
