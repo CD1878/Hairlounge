@@ -9,25 +9,29 @@ import { SERVICE_CAROUSEL_ITEMS } from '../constants';
 const ServicePageCarousel: React.FC = () => {
     const [hoveredId, setHoveredId] = useState<string | null>('signature-packages');
 
-    const scrollToService = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            const headerOffset = 100;
-            const elementPosition = element.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    const handleCardClick = (id: string, isDesktop: boolean = false) => {
+        // Automatically make sure this card becomes hovered/expanded
+        setHoveredId(id);
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-        }
-    };
+        const accordionElement = document.getElementById(id);
+        if (accordionElement) {
+            const header = accordionElement.querySelector('.cursor-pointer') as HTMLElement;
+            const bodyDiv = accordionElement.lastElementChild;
+            const isClosed = bodyDiv && bodyDiv.classList.contains('max-h-0');
 
-    const handleCardClick = (id: string) => {
-        if (hoveredId === id) {
-            scrollToService(id);
-        } else {
-            setHoveredId(id);
+            if (isClosed && header) {
+                // By clicking the header, the ServicesList component's brilliant
+                // frame-perfect custom scroller kicks in exactly as we want it!
+                header.click();
+            } else {
+                // If the accordion is already open, just slide the view down smoothly
+                const headerOffset = 100;
+                const elementPosition = accordionElement.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                    top: elementPosition - headerOffset,
+                    behavior: 'smooth'
+                });
+            }
         }
     };
 
@@ -39,16 +43,18 @@ const ServicePageCarousel: React.FC = () => {
                     <p className="text-brand-dark/60">Click a service to view details</p>
                 </div>
 
-                <div className="relative group px-4 md:px-12" onMouseLeave={() => setHoveredId('signature-packages')}>
+                <div className="relative group px-4 md:px-12">
                     <Swiper
                         modules={[Navigation, Autoplay, Pagination]}
                         spaceBetween={30}
                         slidesPerView={1.2}
                         centeredSlides={true}
-                        loop={true}
+                        // Disabling loop crucially fixes a known Swiper/React bug where cloned DOM slides
+                        // lose their React event listeners (`onMouseEnter` and `onClick` wouldn't fire).
+                        loop={false}
                         speed={800}
                         onSlideChange={(swiper) => {
-                            const currentItem = SERVICE_CAROUSEL_ITEMS[swiper.realIndex];
+                            const currentItem = SERVICE_CAROUSEL_ITEMS[swiper.activeIndex];
                             if (currentItem) {
                                 setHoveredId(currentItem.id);
                             }
