@@ -33,12 +33,12 @@ const GalleryPage: React.FC = () => {
                 </div>
 
                 {/* Elfsight Instagram Feed Container */}
-                <div className="w-full">
+                <div className="w-[calc(100%+3rem)] -mx-6 md:w-full md:mx-0">
                     <div className="elfsight-app-af4a2629-5409-4fa2-aed5-6e3edefa4fe1" data-elfsight-app-lazy></div>
                 </div>
 
                 {/* Optional Follow Section */}
-                <section className="mt-20 text-center">
+                <section className="mt-20 text-center px-6 md:px-0">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-sand/30 rounded-full mb-6 text-brand-black hover:bg-brand-taupe hover:text-white transition-colors cursor-pointer" onClick={() => window.open('https://www.instagram.com/hairloungeamsterdam1/', '_blank')}>
                         <i className="fa-brands fa-instagram text-3xl"></i>
                     </div>
