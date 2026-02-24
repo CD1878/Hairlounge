@@ -23,23 +23,6 @@ const SalonizedWidget: React.FC = () => {
                 based on 514 reviews
             </div>
 
-            {/* Footer Row (Logo + Link) */}
-            <div className="flex items-center justify-center space-x-8">
-                {/* Salonized Logo */}
-                <div className="flex items-center text-stone-300 font-sans font-bold text-xl select-none">
-                    <span className="font-bold mr-1 text-2xl">S</span> salonized
-                </div>
-
-                {/* See All Link */}
-                <a
-                    href="https://www.google.com/search?q=hairlounge+amsterdam+reviews"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-stone-400 hover:text-[#C4A48C] text-sm font-sans flex items-center transition-colors"
-                >
-                    See all <span className="ml-2 text-xs">&gt;</span>
-                </a>
-            </div>
         </div>
     );
 };

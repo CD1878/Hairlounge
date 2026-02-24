@@ -20,7 +20,7 @@ const ReviewsPage: React.FC = () => {
                     </span>
                     <h1 className="text-4xl md:text-6xl font-serif mb-6 text-slate-900">What Our Clients Say</h1>
                     <p className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto">
-                        Rated 4.8/5 on Google & Treatwell based on 1000+ reviews.
+                        Rated 4.7/5 on Google & Treatwell based on 1000+ reviews.
                     </p>
                 </div>
 
@@ -74,16 +74,25 @@ const ReviewsPage: React.FC = () => {
 
                 <div className="mt-20 text-center">
                     <div className="p-12 bg-white rounded-2xl shadow-sm border border-slate-100 max-w-3xl mx-auto">
-                        <h3 className="text-2xl font-serif mb-4">Have you visited us recently?</h3>
-                        <p className="text-slate-600 mb-8">We would love to hear about your experience.</p>
-                        <a
-                            href="https://www.google.com/search?q=hairlounge+amsterdam+reviews"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-block bg-slate-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-slate-800 transition-colors"
-                        >
-                            Leave a Review
-                        </a>
+                        <h3 className="text-2xl font-serif mb-6">Leave a Review</h3>
+                        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                            <a
+                                href="https://www.google.com/search?q=hairlounge+amsterdam+reviews"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block bg-slate-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-slate-800 transition-colors w-full sm:w-auto text-center"
+                            >
+                                Leave a Review
+                            </a>
+                            <a
+                                href="https://www.google.com/search?q=hairlounge+amsterdam+reviews"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block bg-white text-slate-900 border border-slate-200 px-8 py-3 rounded-lg font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all w-full sm:w-auto text-center"
+                            >
+                                See more reviews
+                            </a>
+                        </div>
                     </div>
                 </div>
 

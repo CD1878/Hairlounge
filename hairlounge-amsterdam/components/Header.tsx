@@ -19,16 +19,16 @@ const Header: React.FC = () => {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-40 bg-brand-white/95 backdrop-blur-md h-20 md:h-28 shadow-soft transition-all duration-300"
+        className="fixed top-0 left-0 right-0 z-40 bg-[#2C1E16]/95 backdrop-blur-md h-16 md:h-20 shadow-soft transition-all duration-300"
       >
         <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
           {/* Logo */}
           <div className="z-50 flex items-center">
             <a href="/">
               <img
-                src="/assets/logo/logo-horizontal.png"
+                src="/assets/logo/hl-logo-designs_witgroot.png"
                 alt="Hairlounge Amsterdam"
-                className="h-10 md:h-24 w-auto object-contain rounded-full invert transition-all duration-300"
+                className="h-8 md:h-10 lg:h-12 w-auto object-contain transition-all duration-300"
               />
             </a>
           </div>
@@ -39,7 +39,7 @@ const Header: React.FC = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-sm tracking-widest uppercase text-brand-black hover:text-brand-taupe transition-colors font-medium"
+                className="text-sm tracking-widest uppercase text-white/90 hover:text-brand-taupe transition-colors font-medium"
               >
                 {item.label}
               </a>
@@ -48,15 +48,19 @@ const Header: React.FC = () => {
               href="https://widget.treatwell.nl/salon/hairlounge-amsterdam-1/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-brand-taupe text-white px-8 py-3 text-xs tracking-[0.2em] uppercase rounded-full hover:bg-brand-black transition-colors duration-300 shadow-md hover:shadow-xl"
+              className="relative inline-flex items-center justify-center px-8 py-3 text-xs tracking-[0.2em] uppercase text-white font-bold hover:text-brand-taupe transition-colors duration-300 group"
             >
-              Book Appointment
+              <span className="relative z-10">Book Appointment</span>
+              {/* Hand-drawn organic oval effect in dark red */}
+              <svg className="absolute inset-0 w-full h-full text-[#9B2C2C] -z-0 opacity-90 group-hover:scale-105 transition-transform duration-300" viewBox="0 0 100 40" preserveAspectRatio="none" fill="none" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M 10 20 C 10 5, 90 5, 90 20 C 90 35, 10 35, 10 20 C 10 10, 85 8, 88 22" stroke="currentColor" />
+              </svg>
             </a>
           </nav>
 
           {/* Mobile Menu Trigger */}
           <button
-            className="md:hidden p-2 text-brand-black z-50 focus:outline-none"
+            className="md:hidden p-2 text-white/90 z-50 focus:outline-none"
             onClick={() => setIsMobileMenuOpen(true)}
           >
             <i className="fa-solid fa-bars text-2xl"></i>

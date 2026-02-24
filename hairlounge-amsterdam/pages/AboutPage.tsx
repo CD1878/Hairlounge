@@ -82,37 +82,7 @@ const AboutPage: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Team Section */}
-                    <section className="text-center mb-12">
-                        <span className="bg-brand-taupe/10 text-brand-taupe px-4 py-2 rounded-full text-xs font-bold tracking-[0.2em] uppercase">The Talent</span>
-                        <h2 className="text-4xl md:text-6xl font-serif mt-6 mb-8">Meet The Team</h2>
-                        <p className="max-w-xl mx-auto text-brand-dark/60 mb-16">
-                            The creative minds behind your new look. Dedicated, passionate, and expert in their craft.
-                        </p>
-
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 gap-y-16">
-                            {[
-                                { name: 'Sarah', role: 'Master Stylist', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80' },
-                                { name: 'Michael', role: 'Creative Director', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80' },
-                                { name: 'Emma', role: 'Color Specialist', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80' }
-                            ].map((member, i) => (
-                                <div key={i} className="group cursor-pointer">
-                                    <div className="relative overflow-hidden rounded-[20px] mb-6 bg-gray-100 aspect-[3/4]">
-                                        <img
-                                            src={member.img}
-                                            alt={member.name}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                        />
-                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
-                                    </div>
-                                    <div className="text-center">
-                                        <h3 className="text-2xl font-serif text-brand-black mb-1">{member.name}</h3>
-                                        <p className="text-xs font-bold tracking-[0.2em] uppercase text-brand-taupe">{member.role}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
+                    {/* Team Section Removed */}
 
                     <div className="bg-brand-black text-white p-12 md:p-24 text-center rounded-sm mt-20">
                         <h2 className="text-3xl md:text-5xl font-serif mb-8">Ready for a Change?</h2>

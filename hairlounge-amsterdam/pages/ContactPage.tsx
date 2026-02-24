@@ -21,8 +21,27 @@ const ContactPage: React.FC = () => {
 
                 <div className="grid md:grid-cols-2 gap-16">
                     {/* Contact Info */}
-                    {/* Contact Info */}
                     <div className="space-y-16">
+                        {/* Contact */}
+                        <div className="relative pl-6 border-l-2 border-brand-taupe/30">
+                            <h3 className="font-serif text-3xl mb-6 text-brand-black">Contact</h3>
+                            <div className="flex flex-col space-y-4 text-lg text-brand-dark/80 font-sans">
+                                <div>
+                                    <a href="tel:+31641713035" className="flex items-center hover:text-brand-taupe transition-colors group">
+                                        <i className="fa-solid fa-phone text-xs mr-4 text-brand-taupe/60 group-hover:text-brand-taupe"></i>
+                                        +31 64 171 3035
+                                    </a>
+                                    <p className="text-sm text-brand-dark/50 mt-1 ml-8">
+                                        Phone bookings available between 09:00 – 18:00
+                                    </p>
+                                </div>
+                                <a href="mailto:info@hairlounge-amsterdam.nl" className="flex items-center hover:text-brand-taupe transition-colors group">
+                                    <i className="fa-solid fa-envelope text-xs mr-4 text-brand-taupe/60 group-hover:text-brand-taupe"></i>
+                                    info@hairlounge-amsterdam.nl
+                                </a>
+                            </div>
+                        </div>
+
                         {/* Visit Us */}
                         <div className="relative pl-6 border-l-2 border-brand-taupe/30">
                             <h3 className="font-serif text-3xl mb-6 text-brand-black">Visit Us</h3>
@@ -42,26 +61,6 @@ const ContactPage: React.FC = () => {
                                     <span className="text-brand-black">10:00 - 19:00</span>
                                 </li>
                             </ul>
-                        </div>
-
-                        {/* Contact */}
-                        <div className="relative pl-6 border-l-2 border-brand-taupe/30">
-                            <h3 className="font-serif text-3xl mb-6 text-brand-black">Contact</h3>
-                            <div className="flex flex-col space-y-4 text-lg text-brand-dark/80 font-sans">
-                                <div>
-                                    <a href="tel:+31641713035" className="flex items-center hover:text-brand-taupe transition-colors group">
-                                        <i className="fa-solid fa-phone text-xs mr-4 text-brand-taupe/60 group-hover:text-brand-taupe"></i>
-                                        +31 64 171 3035
-                                    </a>
-                                    <p className="text-sm text-brand-dark/50 mt-1 ml-8">
-                                        Phone bookings available between 09:00 – 18:00
-                                    </p>
-                                </div>
-                                <a href="mailto:info@hairlounge-amsterdam.nl" className="flex items-center hover:text-brand-taupe transition-colors group">
-                                    <i className="fa-solid fa-envelope text-xs mr-4 text-brand-taupe/60 group-hover:text-brand-taupe"></i>
-                                    info@hairlounge-amsterdam.nl
-                                </a>
-                            </div>
                         </div>
                     </div>
 
@@ -99,7 +98,7 @@ const ContactPage: React.FC = () => {
                         allowFullScreen
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
-                        className="grayscale hover:grayscale-0 transition-all duration-500"
+                        className="w-full h-full object-cover"
                     ></iframe>
                 </div>
             </main>

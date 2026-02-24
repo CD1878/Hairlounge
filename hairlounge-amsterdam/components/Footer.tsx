@@ -10,9 +10,9 @@ const Footer: React.FC = () => {
         <div className="flex flex-col justify-center h-full border-b md:border-b-0 md:border-r border-white/10 pb-8 md:pb-0 md:pr-8">
           <a href="/" className="block hover:opacity-80 transition-opacity">
             <img
-              src="/assets/logo/logo-horizontal.png"
+              src="/assets/logo/hl-logo-designs_witgroot.png"
               alt="Hairlounge Amsterdam"
-              className="h-28 md:h-24 w-auto object-contain mix-blend-screen opacity-90 mx-auto md:mx-0"
+              className="h-8 md:h-12 lg:h-16 w-auto max-w-[80%] md:max-w-[90%] object-contain mx-auto md:mx-0"
             />
           </a>
         </div>
@@ -81,18 +81,15 @@ const Footer: React.FC = () => {
         <div>
           <h3 className="text-xs font-bold tracking-[0.25em] uppercase text-brand-taupe mb-8">Follow Us</h3>
 
-          <div>
+          <div className="flex space-x-4 mt-8">
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/hairloungeamsterdam1/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center space-x-3 text-white hover:text-brand-taupe transition-colors group"
+              className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/80 hover:bg-brand-taupe hover:text-white transition-all duration-300"
               aria-label="Visit our Instagram page"
             >
-              <div className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center group-hover:border-brand-taupe transition-colors">
-                <i className="fa-brands fa-instagram text-lg"></i>
-              </div>
-              <span className="text-xs uppercase tracking-[0.2em] group-hover:translate-x-1 transition-transform">Instagram</span>
+              <i className="fa-brands fa-instagram"></i>
             </a>
           </div>
         </div>
