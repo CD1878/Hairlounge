@@ -124,7 +124,7 @@ const ServiceCarousel: React.FC = () => {
                 <Swiper
                     modules={[Navigation, Autoplay]}
                     spaceBetween={20}
-                    slidesPerView={1.2}
+                    slidesPerView={1.4}
                     centeredSlides={true}
                     loop={true}
                     speed={800}

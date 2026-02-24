@@ -93,7 +93,7 @@ const Reviews: React.FC = () => {
 
         <a
           href="/reviews"
-          className="inline-block border-b border-brand-black pb-1 text-xs tracking-[0.3em] uppercase hover:text-brand-taupe hover:border-brand-taupe transition-all duration-300"
+          className="inline-block font-bold border-b border-brand-black pb-1 text-xs tracking-[0.3em] uppercase hover:text-brand-taupe hover:border-brand-taupe transition-all duration-300"
         >
           Read All Reviews
         </a>
