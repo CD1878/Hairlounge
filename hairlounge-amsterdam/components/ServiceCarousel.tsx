@@ -106,7 +106,7 @@ const ServiceCarousel: React.FC = () => {
     }, []);
 
     return (
-        <section className="bg-brand-white pt-32 pb-0 md:pt-40 md:pb-0" ref={swiperRef}>
+        <section className="bg-brand-white pt-32 pb-0 md:pt-40 md:pb-0 overflow-x-hidden" ref={swiperRef}>
             {/* Constrained container for navigation buttons so they align with page content */}
             <div className="w-full max-w-7xl mx-auto px-6 relative h-0">
                 {/* Desktop Navigation Buttons (Absolute, on sides) */}
