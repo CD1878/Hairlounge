@@ -16,7 +16,7 @@ const ServicePageCarousel: React.FC = () => {
     };
 
     return (
-        <section className="py-12 md:py-20 bg-brand-white border-b border-brand-black/5" id="explore-menu">
+        <section className="py-12 md:py-20 bg-brand-white border-b border-brand-black/5 overflow-x-hidden" id="explore-menu">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="mb-12 text-center">
                     <h2 className="text-2xl md:text-3xl font-serif mb-4">Explore Our Menu</h2>
