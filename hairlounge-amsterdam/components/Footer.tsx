@@ -42,20 +42,7 @@ const Footer: React.FC = () => {
           <h3 className="text-xs font-bold tracking-[0.25em] uppercase text-brand-taupe mb-8">Get In Touch</h3>
           <div className="flex flex-col space-y-6">
 
-            {/* Call Option */}
-            <a
-              href="tel:+31202442567"
-              className="group flex items-center space-x-4 text-white hover:text-brand-taupe transition-colors"
-              aria-label="Call Salon"
-            >
-              <div className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center group-hover:border-brand-taupe transition-colors">
-                <i className="fa-solid fa-phone text-lg"></i>
-              </div>
-              <div>
-                <span className="block text-xs uppercase tracking-widest text-white/50 mb-1">Call Salon</span>
-                <span className="font-serif text-xl">020 244 25 67</span>
-              </div>
-            </a>
+
 
             {/* WhatsApp Option */}
             <a
