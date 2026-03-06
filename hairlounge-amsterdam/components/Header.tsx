@@ -3,6 +3,19 @@ import { NAV_ITEMS } from '../constants';
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAnnouncementVisible, setIsAnnouncementVisible] = useState(false);
+
+  useEffect(() => {
+    const isDismissed = localStorage.getItem('announcement_launch_v1');
+    if (!isDismissed) {
+      setIsAnnouncementVisible(true);
+    }
+  }, []);
+
+  const dismissAnnouncement = () => {
+    setIsAnnouncementVisible(false);
+    localStorage.setItem('announcement_launch_v1', 'true');
+  };
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -17,9 +30,29 @@ const Header: React.FC = () => {
   }, [isMobileMenuOpen]);
 
   return (
-    <>
+    <div className="fixed top-0 left-0 right-0 z-50 flex flex-col">
+      {/* Announcement Bar */}
+      {isAnnouncementVisible && (
+        <div className="bg-brand-taupe text-brand-white relative w-full shadow-md">
+          <div className="max-w-7xl mx-auto px-6 py-2.5 flex items-center pr-12">
+            <div className="text-[10px] md:text-xs font-sans leading-relaxed text-left w-full">
+              <strong className="block md:inline font-bold tracking-widest text-[#2C1E16] uppercase mr-2">Our New Website Is Live!</strong>
+              We've made it clearer and easier to use. Over the next few weeks, you may notice small changes as we fine-tune things, and our updated service menu will roll out to Treatwell shortly. We appreciate your patience and understanding.
+            </div>
+            <button
+              onClick={dismissAnnouncement}
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2 text-brand-white/80 hover:text-white transition-colors"
+              aria-label="Close announcement"
+            >
+              <i className="fa-solid fa-xmark text-base"></i>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Header */}
       <header
-        className="fixed top-0 left-0 right-0 z-40 bg-[#2C1E16]/95 backdrop-blur-md h-16 md:h-20 shadow-soft transition-all duration-300"
+        className="bg-[#2C1E16]/95 backdrop-blur-md h-16 md:h-20 shadow-soft transition-all duration-300 w-full relative"
       >
         <div className="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
           {/* Logo */}
@@ -117,7 +150,7 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
