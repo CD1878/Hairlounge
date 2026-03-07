@@ -35,9 +35,9 @@ const ContactPage: React.FC = () => {
                                         Phone bookings available between 09:00 – 18:00
                                     </p>
                                 </div>
-                                <a href="mailto:info@hairlounge-amsterdam.nl" className="flex items-center hover:text-brand-taupe transition-colors group">
+                                <a href="mailto:info@hairlougeamsterdam.nl" className="flex items-center hover:text-brand-taupe transition-colors group">
                                     <i className="fa-solid fa-envelope text-xs mr-4 text-brand-taupe/60 group-hover:text-brand-taupe"></i>
-                                    info@hairlounge-amsterdam.nl
+                                    info@hairlougeamsterdam.nl
                                 </a>
                             </div>
                         </div>
