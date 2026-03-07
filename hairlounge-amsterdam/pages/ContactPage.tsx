@@ -19,10 +19,10 @@ const ContactPage: React.FC = () => {
         e.preventDefault();
         setStatus('loading');
         try {
-            const res = await fetch('https://formspree.io/f/xdawornr', {
+            const res = await fetch('https://swqskhtyddpyjfrohich.supabase.co/functions/v1/contact-form', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify(formData),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...formData, client: 'hairlounge' }),
             });
             if (res.ok) {
                 setStatus('success');
